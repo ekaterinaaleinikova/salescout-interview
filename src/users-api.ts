@@ -1,9 +1,3 @@
-// Create an API using Node.js and Express:
-// 1. POST /user - adds a user.
-// 2. GET /users - returns all users.
-
-// Use Express library
-
 import express, { Request, Response } from 'express';
 const app = express();
 
@@ -12,7 +6,12 @@ app.use(express.json());
 const users: { name: string }[] = [];
 
 app.post('/user', (req: Request, res: Response) => {
-    res.status(200).send();
+    const { name } = req.body;
+    if (name) {
+        users.push({ name });
+        return res.status(201).json({ message: 'User added' });
+    }
+    return res.status(400).json({ message: 'Name is required' });
 });
 
 app.get('/users', (req: Request, res: Response) => {
